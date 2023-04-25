@@ -1,5 +1,5 @@
 # weather-forecast
-A small and simple Python program that predicts the weather. The program is builded with Streamlit. 
+This code is a Python script that creates a web application using Streamlit and Plotly Express libraries to display weather forecast data.
 How to use the program:
   1. Download or clone the program.
   2. Install needed dependencies and libraries
