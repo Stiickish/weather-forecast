@@ -21,7 +21,19 @@ if days <= 1:
 else:
     st.subheader(f"{options} for the next {days} days in {location}")
 
-date, temperature = get_data(place, days, options)
+if location:
+    # Get the data from backend
+    filtered_data = get_data(location, days)
 
-figure = px.line(x=date, y=temperature, labels={"x": "Date", "y": "Temperature (C)"})
-st.plotly_chart(figure)
+    if options == "Temperature":
+        temperatures = [dict["main"]["temp"] for dict in filtered_data]
+        dates = [dict["dt_txt"] for dict in filtered_data]
+        figure = px.line(x=dates, y=temperatures, labels={"x": "Date", "y": "Temperature (C)"})
+        st.plotly_chart(figure)
+
+    if options == "Sky":
+        images = {"Clear": "images/clear.png", "Clouds": "images/cloud.png", "Rain": "images/rain.png",
+                  "Snow": "images/snow.png"}
+        sky_conditions = [dict["weather"][0]["main"] for dict in filtered_data]
+        image_paths = [images[condition] for condition in sky_conditions]
+        st.image(image_paths, width=100)
