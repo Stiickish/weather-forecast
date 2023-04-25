@@ -23,17 +23,20 @@ else:
 
 if location:
     # Get the data from backend
-    filtered_data = get_data(location, days)
+    try:
+        filtered_data = get_data(location, days)
 
-    if options == "Temperature":
-        temperatures = [dict["main"]["temp"] for dict in filtered_data]
-        dates = [dict["dt_txt"] for dict in filtered_data]
-        figure = px.line(x=dates, y=temperatures, labels={"x": "Date", "y": "Temperature (C)"})
-        st.plotly_chart(figure)
+        if options == "Temperature":
+            temperatures = [dict["main"]["temp"] for dict in filtered_data]
+            dates = [dict["dt_txt"] for dict in filtered_data]
+            figure = px.line(x=dates, y=temperatures, labels={"x": "Date", "y": "Temperature (C)"})
+            st.plotly_chart(figure)
 
-    if options == "Sky":
-        images = {"Clear": "images/clear.png", "Clouds": "images/cloud.png", "Rain": "images/rain.png",
-                  "Snow": "images/snow.png"}
-        sky_conditions = [dict["weather"][0]["main"] for dict in filtered_data]
-        image_paths = [images[condition] for condition in sky_conditions]
-        st.image(image_paths, width=100)
+        if options == "Sky":
+            images = {"Clear": "images/clear.png", "Clouds": "images/cloud.png", "Rain": "images/rain.png",
+                      "Snow": "images/snow.png"}
+            sky_conditions = [dict["weather"][0]["main"] for dict in filtered_data]
+            image_paths = [images[condition] for condition in sky_conditions]
+            st.image(image_paths, width=100)
+    except:
+        st.info("No location found. Please enter a valid city")
